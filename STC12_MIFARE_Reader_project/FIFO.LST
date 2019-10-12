@@ -1,0 +1,48 @@
+C51 COMPILER V9.56.0.0   FIFO                                                              06/06/2019 03:24:46 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE FIFO
+OBJECT MODULE PLACED IN FIFO.OBJ
+COMPILER INVOKED BY: F:\Temp\Keil\C51\BIN\C51.EXE FIFO.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "FIFO.h"
+   2          circle_buffer buffer;
+   3          void bufferPop(unsigned char* _buf)
+   4          {
+   5   1      if(buffer.head_pos==buffer.tail_pos) //如果头尾接触表示缓冲区为空
+   6   1      *_buf=0xFF;
+   7   1      else
+   8   1      {
+   9   2      *_buf=buffer.circle_buffer[buffer.head_pos]; //如果缓冲区非空则取头节点值并偏移头节点
+  10   2      if(++buffer.head_pos>=BUFFER_MAX)
+  11   2      buffer.head_pos=0;
+  12   2      }
+  13   1      }
+  14          
+  15          void bufferPush(const unsigned char _buf)
+  16          { 
+  17   1      buffer.circle_buffer[buffer.tail_pos]=_buf; //从尾部追加
+  18   1      if(++buffer.tail_pos>=BUFFER_MAX) //尾节点偏移
+  19   1      buffer.tail_pos=0; //大于数组最大长度 制零 形成环形队列
+  20   1      if(buffer.tail_pos==buffer.head_pos) //如果尾部节点追到头部节点 则修改头节点偏移位置
+             -丢弃早期数据
+  21   1      if(++buffer.head_pos>=BUFFER_MAX)
+  22   1      buffer.head_pos=0;
+  23   1      
+  24   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     69    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     92    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

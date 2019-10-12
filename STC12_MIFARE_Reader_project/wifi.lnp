@@ -1,0 +1,9 @@
+"STARTUP.obj",
+"UartInit.obj",
+"Delayms.obj",
+"UartSend.obj",
+"main.obj",
+"FIFO.obj",
+"ESPInit.obj" 
+TO "wifi" 
+RAMSIZE(256) 

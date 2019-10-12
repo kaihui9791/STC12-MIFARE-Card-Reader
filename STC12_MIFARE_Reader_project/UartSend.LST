@@ -1,0 +1,65 @@
+C51 COMPILER V9.56.0.0   UARTSEND                                                          06/06/2019 03:24:46 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE UARTSEND
+OBJECT MODULE PLACED IN UartSend.OBJ
+COMPILER INVOKED BY: F:\Temp\Keil\C51\BIN\C51.EXE UartSend.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include <STC12C5A60S2.H>
+   2          #include "UartSend.h"
+   3          #include "Value.h"
+   4          #include "LED.h"
+   5          
+   6          void UART1_Send(unsigned char A)
+   7          {       
+   8   1        ES=0;
+   9   1        SBUF=A;
+  10   1        //LED1 = 0;
+  11   1        while(!TI);
+  12   1        //TI=0;
+  13   1        ES=1; 
+  14   1      }
+  15          
+  16          void UART1_SendData(unsigned char* As)
+  17          {
+  18   1        int i = 0;
+  19   1        while(As[i] != '\0'){
+  20   2          UART1_Send(As[i]);
+  21   2          i++;
+  22   2        }
+  23   1        //LED2 = 0;
+  24   1      }
+  25          
+  26          void UART2_Send(unsigned char A)
+  27          {       
+  28   1        IE2=0x00;//ES2=0;
+  29   1        S2BUF=A;
+  30   1        while(!(S2CON&S2TI));//若S2TI=0，在此等待
+  31   1        //S2CON&=~S2TI;//S2TI=0
+  32   1        IE2=0x01;//ES2=1; 
+  33   1      }
+  34          
+  35          void UART2_SendData(unsigned char* As)
+  36          {
+  37   1        int i = 0;
+  38   1        while(As[i] != '\0'){
+  39   2          UART2_Send(As[i]);
+  40   2          i++;
+  41   2        }
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     96    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

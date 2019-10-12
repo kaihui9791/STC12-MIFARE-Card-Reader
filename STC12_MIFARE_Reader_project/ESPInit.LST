@@ -1,0 +1,116 @@
+C51 COMPILER V9.56.0.0   ESPINIT                                                           06/06/2019 03:24:46 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE ESPINIT
+OBJECT MODULE PLACED IN ESPInit.OBJ
+COMPILER INVOKED BY: F:\Temp\Keil\C51\BIN\C51.EXE ESPInit.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include "Delayms.h"
+   2          #include "FIFO.h"
+   3          #include "UartSend.h"
+   4          #include "LED.h"
+   5          #include "ESPInit.h"
+   6          #include <STRING.H>
+   7          
+   8          /*void ESPInit_MODE()
+   9          {
+  10            Delayms(1000);
+  11            while(buffer.circle_buffer[1] != 'K'){
+  12            buffer.head_pos = 0;
+  13            buffer.tail_pos = 0;
+  14            UART1_SendData("AT+CWMODE=2\r\n");
+  15            LED6 = 0;
+  16            Delayms(500);
+  17            UART1_Send(buffer.circle_buffer[1]);  
+  18            //counter++;
+  19            //if(counter > 5){
+  20            //UART1_SendData("AT+RST\r\n");
+  21            //Delayms(1000);
+  22            //}
+  23            }
+  24            LED1 = 0; //模式设定完成指示灯
+  25            UART1_SendData("AT+RST\r\n"); 
+  26            memset(buffer.circle_buffer, 0, sizeof(unsigned char)*16);
+  27          }*/
+  28          
+  29          /*void ESPInit_MODE()
+  30          {
+  31            Delayms(1000);
+  32              while(cnt < 5)
+  33                switch(cnt)
+  34          */        
+  35          
+  36          
+  37          /*void ESPInit_MODE()
+  38          {
+  39            UART1_SendData("AT+CWMODE=2\r\n");
+  40            Delayms(1000);
+  41            UART1_SendData("AT+RST\r\n");
+  42            Delayms(1000);
+  43            UART1_SendData("AT+CIPMUX=1\r\n"); 
+  44            Delayms(1000);
+  45            UART1_SendData("AT+CIPSERVER=1,2080\r\n");
+  46            Delayms(1000);
+  47          }
+  48          */
+  49          int SFLAG = 0;
+  50          void ESPInit_MODE()
+  51          {
+  52   1        int count = 0;
+  53   1        while(count <5){
+  54   2        switch(count){
+  55   3          case 0 :
+C51 COMPILER V9.56.0.0   ESPINIT                                                           06/06/2019 03:24:46 PAGE 2   
+
+  56   3            UART2_SendData("AT+CWMODE=2\r\n");
+  57   3            Delayms(1000);
+  58   3            count++;
+  59   3            break;
+  60   3          case 1 :
+  61   3            UART2_SendData("AT+RST\r\n");
+  62   3            Delayms(1000);
+  63   3            count++;
+  64   3            break;
+  65   3          case 2 :
+  66   3            UART2_SendData("AT+CIPMUX=1\r\n");
+  67   3            Delayms(1000);
+  68   3            count++;
+  69   3            break;
+  70   3          case 3 :
+  71   3            buffer.head_pos = 0;
+  72   3            buffer.tail_pos = 0;
+  73   3            //memset(buffer.circle_buffer, 0, sizeof(unsigned char)*105);
+  74   3            count++;
+  75   3            break;
+  76   3          case 4 :
+  77   3            SFLAG = 1;
+  78   3            UART2_SendData("AT+CIPSERVER=1,2080\r\n");
+  79   3            Delayms(1000);      
+  80   3            if(buffer.circle_buffer[buffer.tail_pos - 3] == 'K'){     
+  81   4              LED7 = 0;
+  82   4              count++;}
+  83   3            else{
+  84   4              count = 0;
+  85   4              SFLAG = 0;}
+  86   3            break;
+  87   3          default :
+  88   3            count = 0;
+  89   3        }
+  90   2      }
+  91   1      }     
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    206    ----
+   CONSTANT SIZE    =     59    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
